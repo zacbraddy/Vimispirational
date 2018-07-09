@@ -1,0 +1,77 @@
+" Map leader key
+let mapleader = "-"
+let maplocalleader = "="
+
+" Kill splash screen
+redraw
+
+" Startup text
+augroup hello_on_enter
+  autocmd!
+  autocmd VimEnter * echo "Jacking into the matrix..."
+augroup END
+
+" Turn on line numbers
+set number
+
+" Turn on relative line number
+set relativenumber
+
+" Use force two spaces for indent
+set shiftround
+set shiftwidth=2 
+
+" Toggle case on the current word
+inoremap <c-u> <esc>viw~<esc>ea
+nnoremap <c-u> viw~<esc>
+
+" [E]dit my [V]imrc
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+
+" [S]ource my [V]imrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Corrections for common typos
+:iabbrev adn and
+:iabbrev tehn then
+:iabbrev fro for
+:iabbrev teh the
+
+" My email address
+:iabbrev @@ zacharybraddy@gmail.com
+
+" React snippets
+:iabbrev reactsfc import React from 'react';<cr><cr>const Component = props => {<cr><cr>};<cr><cr>export default Component;<esc>:%s/Component/
+:iabbrev reactcbc import React, { Component } from 'react';<cr><cr>class ClassBasedComponent {<cr><cr>};<cr><cr>export default ClassBasedComponent;<esc>:%s/ClassBasedComponent/
+
+" Surround word with quotes
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
+
+" Exit insert mode easier
+inoremap jk <esc>
+
+" Exit insert mode properly dickhead
+inoremap <esc> <nop>
+
+" Stop being a noob
+noremap <left> <nop>
+noremap <right> <nop>
+noremap <down> <nop>
+noremap <up> <nop>
+noremap <home> <nop>
+noremap <end> <nop>
+nnoremap <del> <nop>
+
+" Comment and uncomment out a line in javascript
+augroup comment_javascript
+  autocmd!
+  autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
+  autocmd FileType javascript nnoremap <buffer> <localleader>u :s/\/\///<cr>
+augroup END
+
+"Move between windows with less keystrokes
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l

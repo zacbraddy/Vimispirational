@@ -1,4 +1,4 @@
-# Vimispirational
+# Vimspirational
 A repo that documents my journey into trying to be a developer who uses Vim as well as a place to keep my current setup.
 
 ## Table of Contents
