@@ -95,11 +95,10 @@
   nnoremap <c-l> <c-w>l
   
   " [C]lose [A]ll [B]uffers
-    command! CAB silent %bd|echo "All buffers just got blow'd up"
+  command! CAB silent %bd|echo "All buffers just got blow'd up"
 
   " Clear highlighting on escape in normal mode
-  nnoremap <esc> :noh<return><esc>
-  nnoremap <esc>^[ <esc>^[
+  nnoremap <esc> :noh<cr><esc>
 
   " Set and unset shellslash - Particularly important in a windows setup
   " because sometimes plugins prefer noshellslash but other can handle windoze
@@ -162,4 +161,13 @@ augroup filetype_vim
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType vim setlocal foldlevelstart=0
 augroup END
+" }}}
+
+" Plugins ---------------------------- {{{
+
+let g:vimPlugDir = $VIM . '/vimfiles/plugged'
+call CreateDirectoryIfNotExist(g:vimPlugDir)
+call plug#begin(g:vimPlugDir)
+Plug 'tpope/vim-sensible'
+call plug#end()
 " }}}

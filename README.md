@@ -4,18 +4,25 @@ A repo that documents my journey into trying to be a developer who uses Vim as w
 ## Table of Contents
 - [Steps to setup on Windows](#steps-to-setup-on-windows)
 - [ConEmu settings](#conemu-settings)
+- [Plugins I'm using](#plugins-im-using)
+- [Custom commands and key remaps in my vimrc](#custom-commands-and-key-remaps-in-my-vimrc)
 - [Problems I'm sure I can solve but haven't yet](#problems-im-sure-i-can-solve-but-havent-yet)
 - [Problems I've managed to overcome](#problems-ive-managed-to-overcome)
 
 ## Steps to setup on Windows
-1. Got to [vim.org](http://vim.org/) and get the self-installing executable for vim. Install this whereever you wish but remember the path.
 1. Install ConEmu, my favourite flavour is [cmder](http://cmder.net/)
 1. Pull down my ConEmu settings to give you a basic setup. You need to pull down [this xml file](https://github.com/zacbraddy/Vimispirational/blob/master/con_emu_settings.xml) and then import it into ConEmu through the import functionality available from the settings menu which you can pull up in ConEmu using the shortcut `Win+Alt+P`
 1. There are some setting in the ConEMU settings which point to paths on my local machine. Most notably the background image and the path to the vim exectuable for the VIM startup task you'll need to go change them for those to work.
 1. Install clink into ConEmu. Download the zip file from [here](https://mridgers.github.io/clink/) then unzip the files directly into `%cmderinstallfolder%\cmder\vendor\conemu-maximus5\ConEmu\clink`. Clink is used to give you advanced autocomplete within the command line. Nothing really to do with vim it just makes ConEmu more powerful.
-1. Install [Pathogen](https://github.com/tpope/vim-pathogen), just follow the instructions on the README. I used the "brandnew to vim rc file the readme suggests and I also installed [sensible.vim](https://github.com/tpope/vim-sensible) as my first plugin.
+1. Got to [vim.org](http://vim.org/) and get the self-installing executable for vim. Install this whereever you wish but remember the path.
+1. Put the symlinked vimrc in the `$VIM` directory and change the `g:pathToVimRc` so that it points to the `vimrc` in the folder where you pulled this repo down.
+1. Install [vim-plug](https://github.com/junegunn/vim-plug#installation), you only need to put the `.vim` file in the autoload folder of your vimfiles, dead simple
+
+
+
+
+
 1. Install Nerdtree using pathogen by git cloning the nerdtree solution into the bundle folder created during the install of pathogen. This is as per the NERDTree [github repo](https://github.com/scrooloose/nerdtree). When setting the help tags as per the installation instructions on the nerd tree github us `$VIM\bundle\nerdtree\doc\` in place of `~/.vim/bundle/nerdtree/doc/`. This makes the nerd tree reference files work correctly.
-1. Create a `vimtmp` folder in the vimfiles directory then add a folder called `backup` one called `swap` and another called `undo`. This is where the swap, undo and backup files for vim are going to be stored so that we don't pollute our `pwd` with them when working. If you don't create this directory then you will get all the swap, undo and backup files being created in the `pwd` as normal.
 1. Install Fugitive using the install instructions on the [github repo](https://github.com/tpope/vim-fugitive).
 1. Install unimpaired using the install instruction on the [github repo](https://github.com/tpope/vim-unimpaired).
 1. Install the font SauceCodePro NF from [this github repo](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro) I used the regular weight.
@@ -76,26 +83,36 @@ Startup > Environment | Added the line `set projects=<projects folder path>`
 Startup > Tasks | Added a Tools::Vim task I also set the hotkey for this task to Alt+N
 Startup > Tasks > Bash::Git bash | Set the HotKey to LCtrl+Shift+T and also set the startup Project to my projects folder and set as Default task for new console
 
+## Plugins I'm using
+
+|Plugin name|Link|Why?|
+---|---|---
+Sensible|https://github.com/tpope/vim-sensible|The defaults on vim are showing their age a bit and sensible makes vim at it's core behave a little more like you'd expect a modern editor to act
+
 ## Custom commands and key remaps in my vimrc
 
-|Command or Key remap|Mode|What it does|Why?|
+|Command or Key remap|Mode[filetype]|What it does|Why?|
 ---|---|---|---
 `<c-u>`|Normal,Insert|Toggles the case on the current word
 `<leader>"`|Normal|Put double quotes around the current word
 `<leader>'`|Normal|Put single quotes around the current word
+`<localleader>c`|Normal[javascript]|Comment out this line of code
+`<localleader>u`|Normal[javascript]|Uncomment this line of code
+`jk`|Normal, Visual|Change back to normal mode to save me having to use Esc
+`in(`|Operator|Do something with what's in the next set of parentheses on the line
+`il(`|Operator|Do something with what's in the previous (last) set of parentheses on the line
+`an(`|Operator|Do something with what's in the next set of parentheses on the line, including the parentheses
+`al(`|Operator|Do something with what's in the previous (last) set of parentheses on the line, including the parentheses
+`<leader>ev`|Normal|Edit the vimrc that vim is currently using
+`<leader>sv`|Normal|Source the vimrc again to reload it after making settings changes and the like
+`<c-j>,` `<c-k>,` `<c-h>,` `<c-l>`|Normal|Moves the cursor between active windows in the appropriate direction|Just didn't want to have to hit <C-W> before each of them, this simplifies things
 :CAB|Command|Silently deletes all open buffers|When I begin a new problem I like to have a clean slate so I close all my buffers before beginning a new
-`<C-J>,` `<C-K>,` `<C-H>,` `<C-L>`|Normal|Moves the cursor between active windows in the appropriate direction|Just didn't want to have to hit <C-W> before each of them, this simplifies things
-`<F2>`|Normal|Runs the `:NERDTreeToggle` command to open NERDTree|Less key presses to open NERDTree
-`<F3>`|Normal|Runs `:NERDTreeFind`|I thought this was going to be useful in the beginning but now I barely use it because when I open buffers it's normally through NERDTree anyway
-`<esc>`|Normal|Runs the `:noh` command|This is to clear the highlighting left behind from a regex search in fewer key presses
-`<F4>`|Normal|Runs `:NumbersToggle`|Originally when I started using relative line numbers I thought this would be useful, I barely use it now I'm used of relative line numbers and could probably get rid of it
-`<F5>`|Normal|Runs `:NumbersOnOff`|See above
+`<esc>`|Normal|Clear highlighting in normal mode to clear that annoying highlighting you get after doing a find
 `<F6>`|Normal,Insert|Runs `:set shellslash`|Some plugins I use need `:set noshellslash` to work correctly because I'm on windows however with that set like that when I use ^X^F in insert mode it fills in the wrong slashes for my directories, I needed a quick way to flick between the two
 `<F7>`|Normal,Insert|Runs `:set noshellslash`|See above
 `<leader>w`, `<leader>h`|Normal|Sets the tab settings to 4 spaces|My work requires me to use 4 spaces when I'm coding but I prefer 2 so I needed a quick way to switch between the two when I'm switching between doing my own coding and works
 `<leader>cd`|Normal|Sets the pwd to the the directory of the currently open buffer|This helps for when you are trying to use ^X^F that's what it was there for before, although now I'm using vim-rooter I wonder if I don't need this anymore....hmmm....I'll have to test this.
-;n|Insert,Visual|Presses esc i.e. changes back to normal mode|Just wanted to try and avoid having to leave the home row to press esc as often as I could
-`<leader>fm`, `<leader>fi`|Normal|Sets the fold method to marker or indent as appropriate|Just so I can flick on and off folding in my code if I wanted to. Rarely used but still useful
+`<F2>`|Normal|Runs the `:NERDTreeToggle` command to open NERDTree|Less key presses to open NERDTree
 
 ## Problems I'm sure I can solve but haven't yet
 
@@ -109,64 +126,4 @@ Startup > Tasks > Bash::Git bash | Set the HotKey to LCtrl+Shift+T and also set 
 
 ## Problems I've managed to overcome
 
-#### Saving the swap and backup files in a different directory
-
-[This answer on SO](https://stackoverflow.com/a/1625850) explains how to save the swap and backup files to another directory and the other answers explain what exactly these files do.
-
-#### Make it so that when I press escape the highlighting from a search goes away
-
-[This answer on SO](https://stackoverflow.com/a/1037182) explains how to map the esc key to the command `:noh` which clears the search history
-
-#### make it so that tabs are spaces and fix issues where indenting goes screwy
-
-[This answer on SO](https://stackoverflow.com/a/1878983) explains what all the settings are in the vimrc to make all this magic happen
-
-#### Paths with regards to import statements in javascript
-
-I have included in my vimrc a motion to set the pwd to the directory of the file in the currently selected buffer, to do this you can use `,cd` this helps when you are wanting to do autocompletion with ^X^F and it also helps when you are wanting to use import-js with <Leader>j to find local modules to import. I've found it exceedingly difficult to do either of these with modules brought in with npm as the project I work on can have very deeply nested folder structures and it's not always convenient to work on the root level of the project.
-
-#### Getting Airline to look pretty
-
-I found that the airline theme mixing with the cmdr colours was a bit of a pain. The Airline theme definitely has some affect on the colours but basically I just had to choose an airline theme that was close to what I wanted and then tweak my cmdr colours until I got something I liked. What I found that sucked is that the cmdr uses the same colour for both Insert and Visual mode so I couldn't choose different colours for them but hey ho. As for the symbols needed to make airline look pretty I was able to use [this SO article answer](https://vi.stackexchange.com/questions/3359/how-do-i-fix-the-status-bar-symbols-in-the-airline-plugin) to make the changes I needed to the vimrc. I skipped the installing the appropriate fonts bit because my SauceCode Nerd Font works fine. I also deleted the first line out of every two in the vimrc lines in the stack overflow article because they were duplicates and did nothing for the config anyway.
-
-#### ALE falling over and not linting or fixing
-
-I had this problem whereby it ALE just stopped working all together. I found after a while that it looked like ALE was finding the global eslint for linting but then trying to execute a local one, which was a problem if you didn't have a local one. IN the end I found that stuff I'd tried to do for syntatic below was getting in the way, particularly these line in the in the `_vimrc`:
-
-```
-set shell=cmd
-set shellcmdflag=/c
-```
-I removed these and ALE came back to life.
-
-## Things I've tried that didn't work out for me
-
-I had a quick try of Ctrl+P but I found it a bit hard to get my head around and when I was able to make it do what I needed it to I found it quite slow. It's entirely possible this was my fault and lack of understanding, it might be worth revisiting it when I have more experience.
-
-I also tried EasyGrep, again I found that when I finally got it to do what I wanted it to do it was prohibitively slow. I could have spent more time figuring out what I needed to do to optimise it but then I found a post from the creator of EasyGrep who suggested Ack. This worked perfectly. I should clarify, what I wanted EasyGrep to do was search for tokens in all files in my project for this I found it was far too slow, however the basic functions mapped to the leader keys for grepping across the buffers that were open or active window were excellent, but then I could probably get then from mappings in my vimrc pretty easily.
-
-The below is no longer a problem as after using syntastic for some time I found it slowed opening and saving my files down way too much. I may have configured it wrong but none the less it just didn't help me. I found ALE and this was a much better alternative for me as it just worked out of the box.
-
-#### Setup eslint and syntastic properly for linting
-
-[Here's a blog post](https://medium.com/usevim/in-editor-linting-with-syntastic-6814122bdbec) that I worked with to try and get eslint running the create-react-app stuff was more trial and error than anything else and I'd like to see if there's a way I can do that better.
-
-I was havin some problems with eslint whereby the plugin was saying that it couldn't get permission to access a file in my user directory with file name `.tmp`. I fixed this following the advice of [this github issue](https://github.com/mattn/gist-vim/issues/48) in which he says:
-
-```
-This is not a permissions problem, and windows DOES in fact unset read-only. It's just a GUI bug that it thinks the bit is set. If you don't believe me, bring up the command prompt, cd to where the folder is, then do: dir /a:r. The folder you turned read-only off will not appear, because it really IS off.
-
-The problem is really with the system() call. Just doing this from within vim will reproduce it:
-:echo system("echo hi")
-
-The problem is because some shell like cygwin shell is being used. I put these commands at the top of my _vimrc file to solve the problem:
-set shell=cmd
-set shellcmdflag=/c
-
-This problem is solved now. I am not certain why this fixes it, because it seems like a race condition where the tmp file is created and closed before the process is done using it. The tmp file is in fact created successfully (I saw this with procmon), but it is closed/deleted before it's truely done with it.
-```
-
-I spent bloody ages trying to get syntasic to work with the linting in my work's project. Because I had installed everything for eslint globally and used that instead of trying to hack around and make it use the local eslint it means that you needed to make sure that I had all the same versions of eslint and it's plugins installed globally as my project did locally. I did this for a while but I eventually found a way to make the local install work. This involved using the `npm-exec.bat` that I foudn [here](https://gist.github.com/joeyespo/a532500f5615bf3a4bacf1f410407115) and the also installing vim-rooter to change the root path for me as I opened files so I didn't have to do it myself with the `,cd` command I had for myself. 
-
-Whilst I was investigating all this I also found that a useful command `set noshellslash` can help Windows to understand the different slashes that are used in paths in vim. There's lots of info about problems with shell setting as they pertain to windows machines [here](https://github.com/airblade/vim-system-escape). In the end I only needed the `noshellslash`
-
+See problems I've managed to overcome archived in [v1.0 of my dotfiles](https://github.com/zacbraddy/Vimspirational/blob/v1.0/README.md#problems-ive-managed-to-overcome)
