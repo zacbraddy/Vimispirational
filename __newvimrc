@@ -14,6 +14,25 @@
   " Map leader key
   let mapleader = "-"
   let maplocalleader = "="
+
+  " windows prefers noshellslash
+  set noshellslash
+
+  " Look for where I normally keep my project directories
+  if isdirectory("D:/Projects/") 
+    cd D:\Projects
+  endif
+
+  if isdirectory("C:/Projects/") 
+    cd C:\Projects
+  endif
+
+  function! CreateDirectoryIfNotExist(path)
+    if !isdirectory(a:path)
+      call mkdir(a:path, "p", 700)
+    endif
+  endfunction
+
 " }}}
 
 " Vim Settings ------------------------------ {{{
@@ -26,6 +45,15 @@
   " Use force two spaces for indent
   set shiftround
   set shiftwidth=2 
+  
+  " Put all the swap files and other crap in a temp folder
+  set backupdir=$VIM/vimfiles/vimtmp/backup//
+  set directory=$VIM/vimfiles/vimtmp/swap//
+  set undodir=$VIM/vimfiles/vimtmp/undo//
+  call CreateDirectoryIfNotExist(&backupdir)
+  call CreateDirectoryIfNotExist(&directory)
+  call CreateDirectoryIfNotExist(&undodir)
+
 " }}}
 
 " Productivity commands ---------------------- {{{
@@ -55,7 +83,7 @@
   onoremap al( :<c-u>normal! F(va(<cr>
 
   " [E]dit my [V]imrc
-  nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+  execute "nnoremap <leader>ev :vsplit " . g:pathToVimRc . "<cr>"
 
   " [S]ource my [V]imrc
   nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -65,6 +93,29 @@
   nnoremap <c-j> <c-w>j
   nnoremap <c-k> <c-w>k
   nnoremap <c-l> <c-w>l
+  
+  " [C]lose [A]ll [B]uffers
+    command! CAB silent %bd|echo "All buffers just got blow'd up"
+
+  " Clear highlighting on escape in normal mode
+  nnoremap <esc> :noh<return><esc>
+  nnoremap <esc>^[ <esc>^[
+
+  " Set and unset shellslash - Particularly important in a windows setup
+  " because sometimes plugins prefer noshellslash but other can handle windoze
+  nnoremap <F6> :set shellslash<CR>
+  nnoremap <F7> :set noshellslash<CR>
+  inoremap <F6> :set shellslash<CR>
+  inoremap <F7> :set noshellslash<CR>
+
+  " Set tab setting correctly - because at home I prefer two spaces but my
+  " work insists on using 4 like animals
+  nnoremap <leader>w :set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab <CR> :let g:ale_fixers['javascript'] = ['eslint'] <CR> :let g:ale_fixers['javascript.jsx'] = ['eslint'] <bar> echo "Sorry you're at work fella" <CR>
+  nnoremap <leader>h :set tabstop=4 softtabstop=0 expandtab shiftwidth=2 smarttab <bar> echo "You're at home my dude!" <CR>
+
+  " Change pwd to current open buffer path
+  nnoremap <leader>cd : cd %:p:h<CR>:pwd<CR>
+
 " }}}
 
 " Javascript settings ------------------------ {{{
