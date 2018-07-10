@@ -140,13 +140,6 @@
   :iabbrev teh the
 " }}}
 
-" Snippets ----------------------------------- {{{
-  " React snippets ----------------------------- {{{
-  :iabbrev reactsfc import React from 'react';<cr><cr>const Component = props => {<cr><cr>};<cr><cr>export default Component;<esc>:%s/Component/
-  :iabbrev reactcbc import React, { Component } from 'react';<cr><cr>class ClassBasedComponent {<cr><cr>};<cr><cr>export default ClassBasedComponent;<esc>:%s/ClassBasedComponent/
-  " }}}
-" }}}
-
 " Stop being a noob remaps -------------------- {{{
   " Exit insert mode properly dickhead
   inoremap <esc> <nop>
@@ -172,8 +165,8 @@ augroup END
   " Comment and uncomment out a line in javascript
   augroup comment_vimscript
     autocmd!
-    autocmd FileType vimscript nnoremap <buffer> <localleader>c I" <esc>
-    autocmd FileType vimscript nnoremap <buffer> <localleader>u :s/" //<cr>
+    autocmd FileType vim nnoremap <buffer> <localleader>c I" <esc>
+    autocmd FileType vim nnoremap <buffer> <localleader>u :s/" //<cr>
   augroup END
 
 " }}}
@@ -266,6 +259,84 @@ augroup END
 
 " }}}
 
+" vim-airline settings --------------- {{{
+  
+  " Make the tabline show at the top with all the open buffers
+  let g:airline#extensions#tabline#enabled = 1
+  
+  " Make it so the tabline also shows the buffer number
+  let g:airline#extensions#tabline#buffer_nr_show = 1
+
+  if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+  endif
+
+  " First set the unicode symbols in case we don't have nerdfont equalivalents
+  " then overwrite with nerdfont equivalents
+  " unicode symbols
+  let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '◀'
+  let g:airline#extensions#tabline#left_sep = '▶'
+  let g:airline_symbols.linenr = '¶'
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.paste = 'ρ'
+  let g:airline_symbols.paste = 'Þ'
+  let g:airline_symbols.paste = '∥'
+  let g:airline_symbols.whitespace = 'Ξ'
+
+  " airline symbols
+  let g:airline_left_sep = ''
+  let g:airline#extensions#tabline#left_sep = ''
+  let g:airline#extensions#tabline#left_alt_sep = ''
+  let g:airline_left_alt_sep = ''
+  let g:airline_right_sep = ''
+  let g:airline_right_alt_sep = ''
+  let g:airline_symbols.branch = ''
+  let g:airline_symbols.readonly = ''
+  let g:airline_symbols.linenr = ''
+
+" }}}
+
+" vim-airline-themes settings -------------------- {{{
+
+  let g:airline_theme='deus'
+
+" }}}
+
+" ALE Settings --------------------- {{{
+
+  " Set which fixers to use with Ale
+  let g:ale_fixers = {}
+  let g:ale_fixers['javascript'] = ['prettier', 'eslint']
+  let g:ale_fixers['javascript.jsx'] = ['prettier', 'eslint']
+
+  " Set which linters to use with Ale
+  let g:ale_linters = {}
+  let g:ale_linters['javascript'] = ['flow', 'eslint']
+  let g:ale_linters['javascript.jsx'] = ['flow', 'eslint']
+
+  " Run fixers on save
+  let g:ale_fix_on_save = 1
+
+  " Make the gutter symbols look cooler
+  let g:ale_sign_error = '' 
+  let g:ale_sign_warning = ''
+
+  " Put the errors found on the line highlighted show up in the airline status
+  " bar
+  let g:airline#extensions#ale#enabled = 1
+
+  " Use ale completiong
+  let g:ale_completion_enabled = 1
+
+  " Setup prettier options for use with Ale
+  let g:ale_javascript_prettier_options = '--single-quote --trailing-comma all'
+
+  " highlight clear ALEErrorSign
+  " highlight clear ALEWarningSign
+
+" }}}
+
 " Vim-Plug Settings -------------------- {{{
 
   command! PS :PlugStatus
@@ -296,6 +367,20 @@ call plug#begin(g:vimPlugDir)
   Plug 'mxw/vim-jsx'
 
   Plug 'flowtype/vim-flow'
+
+  Plug 'vim-airline/vim-airline'
+
+  Plug 'vim-airline/vim-airline-themes'
+
+  Plug 'enricobacis/vim-airline-clock'
+
+  Plug 'tpope/vim-surround'
+
+  Plug 'mileszs/ack.vim', { 'on': 'Ack' }
+
+  Plug 'w0rp/ale'
+
+  Plug 'townk/vim-autoclose'
 
 call plug#end()
 " }}}

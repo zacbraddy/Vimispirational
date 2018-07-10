@@ -1,2 +1,0 @@
-let g:pathToVimRc="D:\\Projects\\Vimspirational\\__newvimrc"
-execute "source " . g:pathToVimRc

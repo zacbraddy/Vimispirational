@@ -15,36 +15,14 @@ A repo that documents my journey into trying to be a developer who uses Vim as w
 1. There are some setting in the ConEMU settings which point to paths on my local machine. Most notably the background image and the path to the vim exectuable for the VIM startup task you'll need to go change them for those to work.
 1. Install clink into ConEmu. Download the zip file from [here](https://mridgers.github.io/clink/) then unzip the files directly into `%cmderinstallfolder%\cmder\vendor\conemu-maximus5\ConEmu\clink`. Clink is used to give you advanced autocomplete within the command line. Nothing really to do with vim it just makes ConEmu more powerful.
 1. Install the font SauceCodePro NF from [this github repo](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro) I used the regular weight.
+1. Install ack from the [chocolatey repo](https://chocolatey.org/packages/ack). Note this will automatically install StrawberryPerl, to test this has worked correctly run the comman `perl` in the command line. StrawberryPerl adds things to your path variable to make this possible so if running the `perl` command gives you an inoperable command error then close your command window, open a new one and try again. If that doesn't work maybe try adding the paths StrawberryPerl added to the system path to your private path? Other than that you're on your own.
+1. Add my little git alias scripts to your global git config. `edit-unmerged` opens all unmerged changes in vim, helpful for when you have merge conflicts and you want to open them all to edit them. `add-unmerged` adds all the unmerged files to the staged changes for after you've done the merge. `prune-branches` deletes all local branches that no longer have a remote on the server. `prune-branches-force` does the same thing but deletes the branch even if it has unpushed changes, be careful with that second one!
+1. Install flow globally with `npm i flow -g`
+1. Install prettier globally `npm i prettier -g`
 1. Got to [vim.org](http://vim.org/) and get the self-installing executable for vim. Install this whereever you wish but remember the path.
 1. Put the symlinked vimrc in the `$VIM` directory and change the `g:pathToVimRc` so that it points to the `vimrc` in the folder where you pulled this repo down.
 1. Install [vim-plug](https://github.com/junegunn/vim-plug#installation), you only need to put the `.vim` file in the autoload folder of your vimfiles, dead simple
-
-
-
-
-
-1. Install vim-flow for flow static type checking [from this github](https://github.com/flowtype/vim-flow). I have a script in the vimrc that will make this plugin us the version of flow installed locally to your repo so no need to install this globally although if you find a problem this may be that this script is failing.
-1. Install vim-airline [from this article](https://vimawesome.com/plugin/vim-airline).
-1. Install vim-airline-themes [from this article](https://vimawesome.com/plugin/vim-airline-themes).
-1. Install numbers.vim [from this githum](https://github.com/myusuf3/numbers.vim).
-1. Install surround.vim [from this article](https://vimawesome.com/plugin/surround-vim).
-1. Download the latest release of universal ctags from [this repo](https://github.com/universal-ctags/ctags-win32/releases)
-1. Extract the zip and place it in your vimfiles under a folder called ctags.
-1. Add the ctags directory to your PATH variable.
-1. Add ctags to your global gitignor by running this command `git ignore tags -g`
-1. Go to the folder that you want to have ctags for and run `ctags -R --map-javascript=.jsx`
-1. Install import-js [from this github](https://github.com/galooshi/vim-import-js)
-1. Install vim-airline-clock [from this github](https://github.com/enricobacis/vim-airline-clock)
-1. Install vim-rooter [from this github](https://github.com/airblade/vim-rooter)
-1. Add the `npm-exec.bat` file to the `$VIM\bundle` folder (note when I say `\$VIM` I mean your install directory under the vimfiles folder so for example `C:\Vim\vim\vimfiles\bundle`.
-1. Add the `$VIM\bundle` folder to your PATH variable.
-1. Add my little git alias scripts to your global git config. `edit-unmerged` opens all unmerged changes in vim, helpful for when you have merge conflicts and you want to open them all to edit them. `add-unmerged` adds all the unmerged files to the staged changes for after you've done the merge. `prune-branches` deletes all local branches that no longer have a remote on the server. `prune-branches-force` does the same thing but deletes the branch even if it has unpushed changes, be careful with that second one!
-1. Install ack from the [chocolatey repo](https://chocolatey.org/packages/ack). Note this will automatically install StrawberryPerl, to test this has worked correctly run the comman `perl` in the command line. StrawberryPerl adds things to your path variable to make this possible so if running the `perl` command gives you an inoperable command error then close your command window, open a new one and try again. If that doesn't work maybe try adding the paths StrawberryPerl added to the system path to your private path? Other than that you're on your own.
-1. Install ack.vim via pathogen the command is on [their repo](https://github.com/mileszs/ack.vim)
-1. Install ALE via pathogen, see [their github for details](https://github.com/w0rp/ale)
-1. Install prettier globally `npm i prettier -g`
-1. Install Vim-Autoclose via pathogen from [here](https://vimawesome.com/plugin/autoclose)
-1. Install vim-windowswap via pathogen from [here](https://github.com/wesQ3/vim-windowswap)
+1. Open up vim and use the command `:PI` to install all the plugins probably best to restart VIM after that just to be sure
 
 ## ConEmu Settings
 
@@ -87,6 +65,13 @@ Fugitive|https://github.com/tpope/vim-fugitive|I use so much less of this than I
 Unimpaired|https://github.com/tpope/vim-unimpaired|Give you handy little shortcuts based on `[` and `]` to do things like swap lines and add blank lines above and below etc
 vim-javascript|https://github.com/pangloss/vim-javascript|For some of that extra syntax highlighting for javascript and improved indenting
 vim-jsx|https://github.com/mxw/vim-jsx|For some of that extra syntax highlighting for JSX etc. etc.
+vim-flow|https://github.com/flowtype/vim-flow|Does flow checking when you save a file that is flow enabled and also add some omnicompletion functionality. I have a script in the vimrc that searched for local installs of flow when you open a javascript file and sets the flow path to that install rather than the global one. This might cause problems if you are working on multiple projects with different flow settings but works fine in my situation.
+vim-airline|https://github.com/vim-airline/vim-airline|Gives you a nice status bar along the button to show you things about the file you have open and a tab bar along the top that shows all the buffers you have open so you can more easy swithc between buffers at a glance with `:b#` or `[b` or `]b` (the motion commands come from unimpaired)
+vim-airline-themes|https://github.com/vim-airline/vim-airline-themes|A plugin to do some extra cool stuff with airline, like different colours etc.
+vim-surround|https://github.com/tpope/vim-surround|Does a little more than my little scripts that surrounds a word with quotes, this will change surrounding characters, delete them etc. Basicallty it defines some operator pending bindings that allow you to modify surrouding characters. Again I should us this more than I do.
+ack.vim|https://github.com/mileszs/ack.vim|Ack is a code anaylsis and searching tool that you can integrate into vim. This is by far the best way I've found to search and entire project for something.
+ALE|https://github.com/w0rp/ale|Asynchronous Linting Engine, does what it says on the tin, tries to lint everything as you type. Thing is either I'm not using it right or this thing isn't asynchronous enough because on my work computer this slows things down a fair bit. Still gotta have something in this department because the alternative is annoying as hell so till I find a better one this is it.
+vim-autoclose|https://github.com/townk/vim-autoclose|Just a simple little thing to write a closing bracket after I've typed and opening bracket, still working this into my flow but I can work with it without it getting annoying probably 80% of the time now.
 
 ## Custom commands and key remaps in my vimrc
 
@@ -109,7 +94,7 @@ vim-jsx|https://github.com/mxw/vim-jsx|For some of that extra syntax highlightin
 `<esc>`|Normal|Clear highlighting in normal mode to clear that annoying highlighting you get after doing a find
 `<F6>`|Normal,Insert|Runs `:set shellslash`|Some plugins I use need `:set noshellslash` to work correctly because I'm on windows however with that set like that when I use ^X^F in insert mode it fills in the wrong slashes for my directories, I needed a quick way to flick between the two
 `<F7>`|Normal,Insert|Runs `:set noshellslash`|See above
-`<leader>w`, `<leader>h`|Normal|Sets the tab settings to 4 spaces|My work requires me to use 4 spaces when I'm coding but I prefer 2 so I needed a quick way to switch between the two when I'm switching between doing my own coding and works
+`<leader>w`, `<leader>h`|Normal|Sets the tab settings to 4 spaces also turns pretiier on and off|My work requires me to use 4 spaces when I'm coding but I prefer 2 so I needed a quick way to switch between the two when I'm switching between doing my own coding and works.
 `<leader>cd`|Normal|Sets the pwd to the the directory of the currently open buffer|This helps for when you are trying to use ^X^F that's what it was there for before, although now I'm using vim-rooter I wonder if I don't need this anymore....hmmm....I'll have to test this.
 `<F2>`|Normal|Runs the `:NERDTreeToggle` command to open NERDTree|Less key presses to open NERDTree
 `PS`|Command|Runs the `:PlugStatus` command to check the status of plugin in vim-plug|Because less keystrokes
@@ -125,6 +110,12 @@ vim-jsx|https://github.com/mxw/vim-jsx|For some of that extra syntax highlightin
 
 - Read [this article](https://hackernoon.com/5-vim-plugins-i-cant-live-without-for-javascript-development-f7e98f98e8d5) and start installing summa dem sweet plugins!
 - Checkout [YouCompleteMe](https://github.com/Valloric/YouCompleteMe) for code completion. Looks pretty cool!
+- Look into ctags again and see if it's worth looking back into, I had it once but barely used it. Maybe I was too quick to judge. Only look after you've looked at YouCompleteMe because that might do everything I wanted ctags to do
+- Look into vim-import-js again, seemed like a good pacakage but I barely used it, but then that was before I started coding in JS exclusively so maybe it wil lbe more useful than I thought.
+- Would be super cool if I could get the current playing song in spotify into my airline status bar
+- I've only just discover <c-w>+<capital H,J,K,L> for changing window positions but before that I was using vim-windowswap but after finding the native functionality this just seemed overkill. If I decide later it was worth it I could reinstall it.
+- Find a plugin that closes for html tags too so I can work with JSX in a less annoying fashion too
+- Look into vim-react-snippets looks like it could save some time. For that you need Ultisnips which has a dependency on YouCompleteMe so start with YouCompleteMe
 
 ## Problems I've managed to overcome
 
