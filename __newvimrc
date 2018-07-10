@@ -54,6 +54,10 @@
   call CreateDirectoryIfNotExist(&directory)
   call CreateDirectoryIfNotExist(&undodir)
 
+  " Set encoding and set the font to SauceCodePro to use vimdevicons
+  set encoding=utf8
+  set guifont=SauceCodePro\ NF:h11
+
 " }}}
 
 " Productivity commands ---------------------- {{{
@@ -68,13 +72,6 @@
   " Exit insert/visual mode easier
   inoremap jk <esc>
   vnoremap jk <esc>
-
-  " Comment and uncomment out a line in javascript
-  augroup comment_javascript
-    autocmd!
-    autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
-    autocmd FileType javascript nnoremap <buffer> <localleader>u :s/\/\///<cr>
-  augroup END
 
   " Cool parentheses operator pending mappings
   onoremap in( :<c-u>normal! f(vi(<cr>
@@ -121,6 +118,16 @@
   augroup javascript_settings
     autocmd!
     autocmd FileType javascript :setlocal foldmethod=syntax
+    autocmd FileType javascript :setlocal foldlevel=99
+    autocmd FileType javascript.jsx :setlocal foldmethod=syntax
+    autocmd FileType javascript.jsx :setlocal foldlevel=99
+  augroup END
+
+  " Comment and uncomment out a line in javascript
+  augroup comment_javascript
+    autocmd!
+    autocmd FileType javascript nnoremap <buffer> <localleader>c I//<esc>
+    autocmd FileType javascript nnoremap <buffer> <localleader>u :s/\/\///<cr>
   augroup END
 
 " }}}
@@ -161,6 +168,109 @@ augroup filetype_vim
   autocmd FileType vim setlocal foldmethod=marker
   autocmd FileType vim setlocal foldlevelstart=0
 augroup END
+
+  " Comment and uncomment out a line in javascript
+  augroup comment_vimscript
+    autocmd!
+    autocmd FileType vimscript nnoremap <buffer> <localleader>c I" <esc>
+    autocmd FileType vimscript nnoremap <buffer> <localleader>u :s/" //<cr>
+  augroup END
+
+" }}}
+
+" NERDTree settings ------------------------------ {{{
+
+  " NERDTree File highlighting - function used below to make all the
+  " different files different pretty colours!
+  function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+    execute 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+    execute 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+  endfunction
+
+  call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+  call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
+  call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+  call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+  call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+  call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+  call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+  call NERDTreeHighlightFile('php', 'Magenta', 'none', '#ff00ff', '#151515')
+  call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', '#151515')
+  call NERDTreeHighlightFile('gitconfig', 'Gray', 'none', '#686868', '#151515')
+  call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#686868', '#151515')
+  call NERDTreeHighlightFile('bashrc', 'Gray', 'none', '#686868', '#151515')
+  call NERDTreeHighlightFile('bashprofile', 'Gray', 'none', '#686868', '#151515')
+
+  " Widen out that tray size, I gotta see up in there
+  let g:NERDTreeWinSize=60
+
+  " Make the expander arrows use the SauceCodePro font arrows so that look
+  " cooler
+  let g:NERDTreeDirArrowExpandable = '►'
+  let g:NERDTreeDirArrowCollapsible = '▽'
+
+  " Change the pwd whenever you change the root director in NERDTree
+  let g:NERDTreeChDirMode = 2
+
+  " Get rid of the highlight of the files in NERDTree because my colour
+  " scheme makes it hard to see with a highlight
+  let g:NERDTreeHighlightCursorline = 0
+
+  nnoremap <F2> :NERDTreeToggle<cr>
+" }}}
+
+" vim-javascript settings ------------------- {{{
+
+  " Turn on syntax highlighting for flow code
+  let g:javascript_plugin_flow = 1
+
+" }}}
+
+" vim-flow settings ------------------ {{{
+  
+  " Auto close the quick fix list once all flow exceptions have been cleared
+  " up
+  let g:flow#autoclose = 1
+
+  " This script will look to see if there is a node_modules nearby and see if
+  " flow is installed there, if it is it will set the path that vim-flow uses
+  " to use that pacakage instead of the global flow if possible
+  function! UseLocalFlowIfPossible()
+    silent! echom "Finding local flow"
+    let local_flow = finddir('node_modules', '.;') . '/.bin/flow'
+    if matchstr(local_flow, "^\/\\w") == ''
+	let local_flow= getcwd() . "/" . local_flow
+    endif
+    if executable(local_flow)
+      silent! echom "Local flow found!!"
+      let g:flow#flowpath = local_flow
+    endif
+  endfunction
+
+  " Just in case we can use local flow as soon as we load up run the function
+  call UseLocalFlowIfPossible()
+
+  " Add a command to javascript buffers that allow them to setup again the
+  " flow path to local if available
+  " GOTCHA!!! I haven't cleared previous commands because I'm piggy backing on
+  " to the javascript_settings autocommand group from above
+  augroup javascript_settings
+    autocmd FileType javascript :call UseLocalFlowIfPossible()
+    autocmd FileType javascript.jsx :call UseLocalFlowIfPossible()
+  augroup END
+
+" }}}
+
+" Vim-Plug Settings -------------------- {{{
+
+  command! PS :PlugStatus
+  command! PI :PlugInstall
+  
 " }}}
 
 " Plugins ---------------------------- {{{
@@ -168,6 +278,34 @@ augroup END
 let g:vimPlugDir = $VIM . '/vimfiles/plugged'
 call CreateDirectoryIfNotExist(g:vimPlugDir)
 call plug#begin(g:vimPlugDir)
-Plug 'tpope/vim-sensible'
+
+  Plug 'tpope/vim-sensible'
+
+  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  
+  Plug 'ryanoasis/vim-devicons'
+
+  Plug 'airblade/vim-gitgutter'
+
+  Plug 'tpope/vim-fugitive', { 'on': ['Gwrite', 'Gread', 'Gblame', 'Gedit', 'Gdiff', 'Gmove', 'Grep', 'Gcommit', 'Git'] }
+
+  Plug 'tpope/vim-unimpaired'
+
+  Plug 'pangloss/vim-javascript'
+
+  Plug 'mxw/vim-jsx'
+
+  Plug 'flowtype/vim-flow'
+
 call plug#end()
 " }}}
+
+" Devicons Settings ------------------ {{{
+
+  " Gotcha!!! This only works if you put it after the plugins
+  if exists('g:loaded_webdevicons')     
+    call webdevicons#refresh()
+  endif
+  
+" }}}
+

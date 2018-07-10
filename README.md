@@ -14,6 +14,7 @@ A repo that documents my journey into trying to be a developer who uses Vim as w
 1. Pull down my ConEmu settings to give you a basic setup. You need to pull down [this xml file](https://github.com/zacbraddy/Vimispirational/blob/master/con_emu_settings.xml) and then import it into ConEmu through the import functionality available from the settings menu which you can pull up in ConEmu using the shortcut `Win+Alt+P`
 1. There are some setting in the ConEMU settings which point to paths on my local machine. Most notably the background image and the path to the vim exectuable for the VIM startup task you'll need to go change them for those to work.
 1. Install clink into ConEmu. Download the zip file from [here](https://mridgers.github.io/clink/) then unzip the files directly into `%cmderinstallfolder%\cmder\vendor\conemu-maximus5\ConEmu\clink`. Clink is used to give you advanced autocomplete within the command line. Nothing really to do with vim it just makes ConEmu more powerful.
+1. Install the font SauceCodePro NF from [this github repo](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro) I used the regular weight.
 1. Got to [vim.org](http://vim.org/) and get the self-installing executable for vim. Install this whereever you wish but remember the path.
 1. Put the symlinked vimrc in the `$VIM` directory and change the `g:pathToVimRc` so that it points to the `vimrc` in the folder where you pulled this repo down.
 1. Install [vim-plug](https://github.com/junegunn/vim-plug#installation), you only need to put the `.vim` file in the autoload folder of your vimfiles, dead simple
@@ -22,16 +23,7 @@ A repo that documents my journey into trying to be a developer who uses Vim as w
 
 
 
-1. Install Nerdtree using pathogen by git cloning the nerdtree solution into the bundle folder created during the install of pathogen. This is as per the NERDTree [github repo](https://github.com/scrooloose/nerdtree). When setting the help tags as per the installation instructions on the nerd tree github us `$VIM\bundle\nerdtree\doc\` in place of `~/.vim/bundle/nerdtree/doc/`. This makes the nerd tree reference files work correctly.
-1. Install Fugitive using the install instructions on the [github repo](https://github.com/tpope/vim-fugitive).
-1. Install unimpaired using the install instruction on the [github repo](https://github.com/tpope/vim-unimpaired).
-1. Install the font SauceCodePro NF from [this github repo](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro) I used the regular weight.
-1. Install vim-devicon installation instruction [can be found here](https://vimawesome.com/plugin/vim-devicons). Note that because you installed the font in the last step and the third step is to make changes to the vimrc you only really need to clone the plugin to make this work.
-1. Install nerdtree-git-plugin using pathogen as per [github repo instructions](https://github.com/Xuyuanp/nerdtree-git-plugin).
-1. Install vim-javascript for syntax highlighting [from this github](https://github.com/pangloss/vim-javascript).
-1. Install vim-jsx for jsx syntax highlighting [from this github](https://github.com/mxw/vim-jsx).
 1. Install vim-flow for flow static type checking [from this github](https://github.com/flowtype/vim-flow). I have a script in the vimrc that will make this plugin us the version of flow installed locally to your repo so no need to install this globally although if you find a problem this may be that this script is failing.
-1. Install vim-gitgutter [from this article](https://vimawesome.com/plugin/vim-gitgutter).
 1. Install vim-airline [from this article](https://vimawesome.com/plugin/vim-airline).
 1. Install vim-airline-themes [from this article](https://vimawesome.com/plugin/vim-airline-themes).
 1. Install numbers.vim [from this githum](https://github.com/myusuf3/numbers.vim).
@@ -87,7 +79,14 @@ Startup > Tasks > Bash::Git bash | Set the HotKey to LCtrl+Shift+T and also set 
 
 |Plugin name|Link|Why?|
 ---|---|---
-Sensible|https://github.com/tpope/vim-sensible|The defaults on vim are showing their age a bit and sensible makes vim at it's core behave a little more like you'd expect a modern editor to act
+Sensible|https://github.com/tpope/vim-sensible|The defaults on vim are showing their age a bit and sensible makes vim at it's core behave a little more like you'd expect a modern editor to act.
+NERDTree|https://github.com/scrooloose/nerdtree|A file tree for exploring folders and opening up files, I know we're editing in a terminal but there's no need to go overboard here! I don't want to have to type out every file I want to open.
+vim-devicons|https://github.com/ryanoasis/vim-devicons|Pretty icons for use in NERDTree to show for different files and obviously I can use these for other places that need icons as well
+vim-gitgutter|https://github.com/airblade/vim-gitgutter|Shows icons for lines that have been modified and added in files that I open that are in a git repo. This opens up the ability to us `[c` and `]c` to jump between hunks in a buffer. Might be work looking at the readme on the vim-gitgutter repo as well because there is some cool extensions that might be useful there
+Fugitive|https://github.com/tpope/vim-fugitive|I use so much less of this than I should, basically it gives you a heap of super powerful Git based commands to do things like blaming and diffing etc.
+Unimpaired|https://github.com/tpope/vim-unimpaired|Give you handy little shortcuts based on `[` and `]` to do things like swap lines and add blank lines above and below etc
+vim-javascript|https://github.com/pangloss/vim-javascript|For some of that extra syntax highlighting for javascript and improved indenting
+vim-jsx|https://github.com/mxw/vim-jsx|For some of that extra syntax highlighting for JSX etc. etc.
 
 ## Custom commands and key remaps in my vimrc
 
@@ -113,17 +112,28 @@ Sensible|https://github.com/tpope/vim-sensible|The defaults on vim are showing t
 `<leader>w`, `<leader>h`|Normal|Sets the tab settings to 4 spaces|My work requires me to use 4 spaces when I'm coding but I prefer 2 so I needed a quick way to switch between the two when I'm switching between doing my own coding and works
 `<leader>cd`|Normal|Sets the pwd to the the directory of the currently open buffer|This helps for when you are trying to use ^X^F that's what it was there for before, although now I'm using vim-rooter I wonder if I don't need this anymore....hmmm....I'll have to test this.
 `<F2>`|Normal|Runs the `:NERDTreeToggle` command to open NERDTree|Less key presses to open NERDTree
+`PS`|Command|Runs the `:PlugStatus` command to check the status of plugin in vim-plug|Because less keystrokes
+`PI`|Command|Runs the `:PlugInstall` command to install plugins with vim-plug|Because less keystrokes
 
 ## Problems I'm sure I can solve but haven't yet
 
 - vim-rooter seems to only change the pwd after syntastic as already made it's check which means the first file you open for any project won't automatically get linted because syntastic falls over the background, every subsequent file opened doesn't have this problem because the root has already been changed. This would be a pretty big problem if you were working on two projects at the same time and flicking back and forth but as it stands this is a minor inconvenience for me so I'm leaving it as a problem to solve another day.
 
+- nertree-git-plugin was a plugin that worked with mixed results in the past but I've found that since moving to vim-plug it has stopped working altogether. Not sure which plugin's fault it is as yet, maybe later I can find out what the problem is and try and solve it. For now I'm not so bothered I have vim-gitgutter anyway. I tried everything in [this issue](https://github.com/Xuyuanp/nerdtree-git-plugin/issues/75) but to no avail as at 10/7/2018.
+
 #### General ideas
 
 - Read [this article](https://hackernoon.com/5-vim-plugins-i-cant-live-without-for-javascript-development-f7e98f98e8d5) and start installing summa dem sweet plugins!
 - Checkout [YouCompleteMe](https://github.com/Valloric/YouCompleteMe) for code completion. Looks pretty cool!
-- Making it so that the backup, undo and swap directories are created automatically. Some [ideas for this can be found here](http://vim.wikia.com/wiki/Remove_swap_and_backup_files_from_your_working_directory)
 
 ## Problems I've managed to overcome
 
 See problems I've managed to overcome archived in [v1.0 of my dotfiles](https://github.com/zacbraddy/Vimspirational/blob/v1.0/README.md#problems-ive-managed-to-overcome)
+
+#### Creating a directory that doesn't exist
+
+I had a problem for a while where I was moving all my swap, undo and backup files to a centralised folder so I didn't have them all over my file system this was fine but I had to create the folders by hand and if I didn't them vim crashed on start up. I found [this SO article](https://stackoverflow.com/a/43880028/5188846) which showed me how to make a directory if it didn't exist so I make the `CreateDirectoryIfNotExist` function in my vimrc and then started using it whenever I wanted to make sure a directory existed.
+
+#### Folding not working for javascript in the JSX files
+
+I was finding that if I loaded up a jsx file for the first time then the code folding didn't work. But if I deleted the buffer and then reloaded it then the folding appeared perfectly. I found this was a problem with these plugins not liking being lazy loaded by vim-plug so I had to have them load on startup.
